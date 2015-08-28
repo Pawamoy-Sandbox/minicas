@@ -1,0 +1,120 @@
+Mode interactif :
+	./minicas
+
+Mode batch :
+	./minicas < fichier
+	./minicas fichier
+	
+	Le fichier en question doit etre terminé par la commande 'quit',
+	ainsi qu'un saut de ligne.
+	Il est possible d'insérer des commentaires (qui seront affichés
+	en console) en commençant la ligne par le symbole dièse (#).
+
+Syntaxe d'une commande (exceptée 'speedtest') :
+	nom_matrice(ou_variable) : commande(arguments, ...)
+	Les espaces sont facultatifs.
+	Exemples :
+		a:7
+		B:matrix([1,2])
+		C:matrix([4,-a])
+		A:mult_scal(B,-a)
+		r:rank(A)
+		C:display
+
+Commandes :
+	addition(A,B)
+	sub(A,B)
+	mult(A,B)
+	mult_scal(A,s)
+	expo(A,n)
+	transpose(A)
+	determinant(A)
+	decomposition(A)
+	solve(A,B)
+	invert(A)
+	rank(A)
+	speedtest commande min max pas [secondes]
+	display
+	
+	Toutes ces fonctions renvoient une nouvelle matrice,
+	sauf determinant et rank qui renvoient un nombre,
+	et decomposition qui renvoie DEUX matrices :
+	A : decomposition(A) crée la matrice A_L et la matrice A_U
+	(B : decomposition(A) aurait renvoyé B_L et B_U),
+	ainsi que speedtest et display qui ne renvoient rien.
+	
+	Si les préconditions sur les matrices ne sont pas respectées,
+	un message d'erreur s'affiche à l'écran pour les rappeler.
+	
+
+Commande display :
+	On peut demander au programme d'afficher toutes les variables et/ou
+	toutes les matrices définies, grâce à la commande :
+		*:display (variables et matrices)
+		*V:display ou *v:display (variables)
+		*M:display ou *m:display (matrices)
+	On peut également afficher une seule variable/matrice :
+		nom_var/mat : display
+
+	
+Commande speedtest :
+	Pour arreter la commande speedtest en cours,
+	appuyer sur Ctrl-C. Le calcul en cours se termine alors normalement,
+	puis le programme sort de la boucle itérative et génère le graphique.
+	Le graphique généré présente un axe jusqu'à la 
+	dernière taille de matrice calculée.
+	La commande speedtest fonctionne avec toutes les autres fonctions,
+	sauf matrix et elle-meme evidemment.
+	L'unité de temps est modifiée en fonction du temps maximum atteint
+	(le dernier calculé avant sortie de la boucle).
+	De plus, l'axe des abscisses est allégé si les données sont nombreuses,
+	afin de faciliter la lecture.
+
+Détail :
+	Si l'utilisateur (ou la lecture dans un fichier) entre plus de 5 fois
+	de suite un appel à une commande non implémentée, le programme affiche
+	un message d'erreur et termine. Cette valeur (6) est définie dans la 
+	constante 'FNI' contenue dans minicas.h (#define).
+	
+	Si un symbole est déjà défini, il peut etre "écrasé" par redéfinition.
+	Exemple :
+		A:matrix([A,2][3,4])
+		A:matrix([4,3,5,6])
+		A:display
+			Matrix A :
+				[ 4 3 5 6 ]
+		
+	En revanche, si la commande tappée comporte des erreurs
+	(préconditions sur les matrices, erreur de syntaxe), le symbole
+	n'est pas redéfini ni supprimé.
+	
+	Une variable et une matrice peuvent avoir les memes noms sans que
+	cela ne pose problème. Exemple :
+		X : -15
+		X : matrix([X, -X][1, 8])
+		# la commande suivante écrase la VARIABLE X
+		X : determinant(X)
+		# la commande suivante écrase la MATRICE X
+		X : addition(X,X)
+	
+	Cependant, comme il est possible d'affecter une valeur à une
+	variable, ou une matrice à un objet matrice, en faisant appel
+	à la référence d'une autre variable/matrice, il est conseillé
+	d'éviter de donner les memes noms entre variables et matrices.
+	Exemple :
+		a:2
+		B:matrix([1,a,3])
+		# la commande suivante définit C comme une matrice égale à B
+		C:B
+		# la commande suivante définit B comme une variable valant -a
+		B:-a
+		# la commande suivante définit D comme une variable valant B (donc -2)
+		# le référencement s'applique en priorité sur les variables
+		D:B
+		*:display
+		
+		En l'occurence il n'est plus possible de "cloner" la matrice B.
+		
+	La commande display affichera la matrice correspondante, ainsi que
+	la variable correspondante si elle existe.
+

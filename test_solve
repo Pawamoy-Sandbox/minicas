@@ -1,0 +1,10 @@
+#Test sur la résolution d'un système d'équations linéaires :
+#a:4
+a:4
+#A:matrix([1,2,1][a,2,6][2,3,1])
+A:matrix([1,2,1][a,2,6][2,3,1])
+#B:matrix([4][6][5])
+B:matrix([4][6][5])
+#X:solve(A,B)
+X:solve(A,B)
+quit

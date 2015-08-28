@@ -1,0 +1,10 @@
+#Test sur l'inversion de matrice :
+#A:matrix([-3,5,6][-1,2,2][1,-1,1])
+A:matrix([-3,5,6][-1,2,2][1,-1,1])
+#d:determinant(A)
+d:determinant(A)
+#AI:invert(A);
+AI:invert(A);
+#I:mult(A,AI)
+I:mult(A,AI)
+quit
